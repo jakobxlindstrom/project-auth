@@ -1,15 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 export const SignUp = () => {
-  // const SlideDiv = () => {
-  //     const signUpButton = document.getElementById('signUp')
-  //     const signInButton = document.getElementById('signIn');
-  //     const container = document.getElementById('container');
-
-  // }
+  const [isContainerActive, setIsContainerActive] = useState('')
 
   return (
-    <div className='container' id='container'>
+    <div
+      className={`container ${isContainerActive ? 'right-panel-active' : ''}`}
+    >
       <div className='form-container sign-up-container'>
         <form action='#'>
           <h1>Create Account</h1>
@@ -59,14 +56,26 @@ export const SignUp = () => {
             <p>
               To keep connected with us please login with your personal info
             </p>
-            <button className='ghost' id='signIn'>
+            <button
+              className='ghost'
+              id='signIn'
+              onClick={() => {
+                setIsContainerActive(false)
+              }}
+            >
               Sign In
             </button>
           </div>
           <div className='overlay-panel overlay-right'>
             <h1>Hello, Friend!</h1>
             <p>Enter your personal details and start journey with us</p>
-            <button className='ghost' id='signUp'>
+            <button
+              className='ghost'
+              id='signUp'
+              onClick={() => {
+                setIsContainerActive(true)
+              }}
+            >
               Sign Up
             </button>
           </div>
