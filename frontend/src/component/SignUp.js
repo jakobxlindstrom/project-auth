@@ -1,14 +1,83 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import { useDispatch, batch } from 'react-redux'
+import { API_URL } from '../utils/constants'
+import user from '../reducers/user'
 
 export const SignUp = () => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  // const [mode, setMode] = useState('')
   const [isContainerActive, setIsContainerActive] = useState('')
+
+  const dispatch = useDispatch()
+
+  const onSignUpSubmit = (event) => {
+    event.preventDefault()
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    }
+
+    fetch(API_URL('signup'), options)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          batch(() => {
+            dispatch(user.actions.setUserId(data.response.userId))
+            dispatch(user.actions.setUsername(data.response.username))
+            dispatch(user.actions.setAccessToken(data.response.accessToken))
+            dispatch(user.actions.setError(null))
+          })
+        } else {
+          dispatch(user.actions.setUserId(null))
+          dispatch(user.actions.setUsername(null))
+          dispatch(user.actions.setAccessToken(null))
+          dispatch(user.actions.setError(data.response))
+        }
+      })
+  }
+
+  const onSignInSubmit = (event) => {
+    event.preventDefault()
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    }
+
+    fetch(API_URL('signin'), options)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          batch(() => {
+            dispatch(user.actions.setUserId(data.response.userId))
+            dispatch(user.actions.setUsername(data.response.username))
+            dispatch(user.actions.setAccessToken(data.response.accessToken))
+            dispatch(user.actions.setError(null))
+          })
+        } else {
+          dispatch(user.actions.setUserId(null))
+          dispatch(user.actions.setUsername(null))
+          dispatch(user.actions.setAccessToken(null))
+          dispatch(user.actions.setError(data.response))
+        }
+      })
+  }
 
   return (
     <div
       className={`container ${isContainerActive ? 'right-panel-active' : ''}`}
     >
       <div className='form-container sign-up-container'>
-        <form action='#'>
+        {/* Sign up form */}
+        <form action='#' onSubmit={onSignUpSubmit}>
           <h1>Create Account</h1>
           <div className='social-container'>
             <a href='#' className='social'>
@@ -22,14 +91,25 @@ export const SignUp = () => {
             </a>
           </div>
           <span>or use your email for registration</span>
-          <input type='text' placeholder='Name' />
-          <input type='email' placeholder='Email' />
-          <input type='password' placeholder='Password' />
+          <input
+            type='text'
+            value={username}
+            placeholder='Username'
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
+          <input
+            type='password'
+            value={password}
+            placeholder='Password'
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <button>Sign Up</button>
         </form>
       </div>
       <div className='form-container sign-in-container'>
-        <form action='#'>
+        {/* Sign in form */}
+        <form action='#' onSubmit={onSignInSubmit}>
           <h1>Sign in</h1>
           <div className='social-container'>
             <a href='#' className='social'>
@@ -43,8 +123,20 @@ export const SignUp = () => {
             </a>
           </div>
           <span>or use your account</span>
-          <input type='email' placeholder='Email' />
-          <input type='password' placeholder='Password' />
+          <input
+            id='username'
+            type='text'
+            value={username}
+            placeholder='Username'
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            id='password'
+            type='password'
+            value={password}
+            placeholder='Password'
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <a href='#'>Forgot your password?</a>
           <button>Sign In</button>
         </form>
@@ -59,9 +151,7 @@ export const SignUp = () => {
             <button
               className='ghost'
               id='signIn'
-              onClick={() => {
-                setIsContainerActive(false)
-              }}
+              onClick={() => setIsContainerActive(false)}
             >
               Sign In
             </button>
@@ -72,9 +162,7 @@ export const SignUp = () => {
             <button
               className='ghost'
               id='signUp'
-              onClick={() => {
-                setIsContainerActive(true)
-              }}
+              onClick={() => setIsContainerActive(true)}
             >
               Sign Up
             </button>
