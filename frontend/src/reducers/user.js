@@ -21,6 +21,9 @@ const user = createSlice({
     setError: (store, action) => {
       store.error = action.payload
     },
+    setDeleteAccessToken: (store) => {
+      store.accessToken = null
+    },
   },
 })
 

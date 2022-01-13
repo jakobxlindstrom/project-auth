@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { useDispatch, batch } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch, batch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { API_URL } from '../utils/constants'
 import user from '../reducers/user'
 
@@ -9,7 +10,16 @@ export const SignUp = () => {
   // const [mode, setMode] = useState('')
   const [isContainerActive, setIsContainerActive] = useState('')
 
+  const accessToken = useSelector((store) => store.user.accessToken)
+
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate('/')
+    }
+  }, [accessToken, navigate])
 
   const onSignUpSubmit = (event) => {
     event.preventDefault()
@@ -79,17 +89,7 @@ export const SignUp = () => {
         {/* Sign up form */}
         <form action='#' onSubmit={onSignUpSubmit}>
           <h1>Create Account</h1>
-          <div className='social-container'>
-            <a href='#' className='social'>
-              <i className='fab fa-facebook-f'></i>
-            </a>
-            <a href='#' className='social'>
-              <i className='fab fa-google-plus-g'></i>
-            </a>
-            <a href='#' className='social'>
-              <i className='fab fa-linkedin-in'></i>
-            </a>
-          </div>
+          <div className='social-container'></div>
           <span>or use your email for registration</span>
           <input
             type='text'
@@ -111,17 +111,7 @@ export const SignUp = () => {
         {/* Sign in form */}
         <form action='#' onSubmit={onSignInSubmit}>
           <h1>Sign in</h1>
-          <div className='social-container'>
-            <a href='#' className='social'>
-              <i className='fab fa-facebook-f'></i>
-            </a>
-            <a href='#' className='social'>
-              <i className='fab fa-google-plus-g'></i>
-            </a>
-            <a href='#' className='social'>
-              <i className='fab fa-linkedin-in'></i>
-            </a>
-          </div>
+          <div className='social-container'></div>
           <span>or use your account</span>
           <input
             id='username'
@@ -137,7 +127,7 @@ export const SignUp = () => {
             placeholder='Password'
             onChange={(e) => setPassword(e.target.value)}
           />
-          <a href='#'>Forgot your password?</a>
+          {/* <a href='#'>Forgot your password?</a> */}
           <button>Sign In</button>
         </form>
       </div>

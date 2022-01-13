@@ -56,7 +56,7 @@ const authenticateUser = async (req, res, next) => {
 // Start defining your routes here
 app.get('/home', authenticateUser)
 app.get('/home', (req, res) => {
-  res.send('Hello world')
+  res.json('Hello world')
 })
 
 app.post('/signup', async (req, res) => {

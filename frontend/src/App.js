@@ -5,6 +5,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit'
 
 import { SignUp } from 'component/SignUp'
 import { NotFound } from 'component/NotFound'
+import { Access } from 'component/Access'
 import '../src/index.css'
 import user from 'reducers/user'
 import info from 'reducers/info'
@@ -21,7 +22,8 @@ export const App = () => {
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<SignUp />} />
+          <Route path='/' element={<Access />} />
+          <Route path='/signin' element={<SignUp />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>
