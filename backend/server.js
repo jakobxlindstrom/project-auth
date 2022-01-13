@@ -3,6 +3,7 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
+import bodyParser from 'body-parser'
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/authAPI'
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -22,6 +23,14 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: () => crypto.randomBytes(128).toString('hex'),
   },
+  profilePic: {
+    name: String,
+    desc: String,
+    img: {
+      data: Buffer,
+      contentType: String,
+    },
+  },
 })
 
 const User = mongoose.model('User', UserSchema)
@@ -36,6 +45,24 @@ const app = express()
 // Add middlewares to enable cors and json body parsing
 app.use(cors())
 app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
+app.set('view engine', 'ejs')
+
+const multer = require('multer')
+// const imgModel = require('./model')
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '-' + Date.now())
+  },
+})
+
+const upload = multer({ storage: storage })
 
 // Lägg till origin domain
 
@@ -57,6 +84,42 @@ const authenticateUser = async (req, res, next) => {
 app.get('/home', authenticateUser)
 app.get('/home', (req, res) => {
   res.json('Hello world')
+
+  User.find({}, (err, items) => {
+    if (err) {
+      console.log(err)
+      res.status(500).send('An error occurred', err)
+    } else {
+      res.render('imagesPage', { items: items })
+    }
+  })
+})
+
+app.post('/home', upload.single('image'), (req, res, next) => {
+  const obj = new User({
+    img: {
+      data: obj.fs.readFileSync(
+        path.join(__dirname + '/uploads/' + req.file.filename)
+      ),
+      contentType: 'image/png',
+    },
+  })
+  // const obj = {
+  //   img: {
+  //     data: fs.readFileSync(
+  //       path.join(__dirname + '/uploads/' + req.file.filename)
+  //     ),
+  //     contentType: 'image/png',
+  //   },
+  // }
+  // User.create(obj, (err, item) => {
+  //   if (err) {
+  //     console.log(err)
+  //   } else {
+  //     // item.save();
+  //     res.redirect('/home')
+  //   }
+  // })
 })
 
 app.post('/signup', async (req, res) => {
