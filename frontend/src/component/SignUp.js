@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { API_URL } from '../utils/constants'
 import user from '../reducers/user'
 
+import { StyledButton } from './StyledButton'
+
 export const SignUp = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -104,7 +106,7 @@ export const SignUp = () => {
             placeholder='Password'
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button>Sign Up</button>
+          <StyledButton>Sign Up</StyledButton>
         </form>
       </div>
       <div className='form-container sign-in-container'>
@@ -128,7 +130,7 @@ export const SignUp = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           {/* <a href='#'>Forgot your password?</a> */}
-          <button>Sign In</button>
+          <StyledButton>Sign In</StyledButton>
         </form>
       </div>
       <div className='overlay-container'>
@@ -138,24 +140,24 @@ export const SignUp = () => {
             <p>
               To keep connected with us please login with your personal info
             </p>
-            <button
+            <StyledButton
               className='ghost'
               id='signIn'
               onClick={() => setIsContainerActive(false)}
             >
               Sign In
-            </button>
+            </StyledButton>
           </div>
           <div className='overlay-panel overlay-right'>
             <h1>Hello, Friend!</h1>
             <p>Enter your personal details and start journey with us</p>
-            <button
+            <StyledButton
               className='ghost'
               id='signUp'
               onClick={() => setIsContainerActive(true)}
             >
               Sign Up
-            </button>
+            </StyledButton>
           </div>
         </div>
       </div>

@@ -3,6 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import user from 'reducers/user'
 import { API_URL } from '../utils/constants'
+import styled from 'styled-components'
+
+import { StyledButton } from './StyledButton'
+
+const ProfileCard = styled.div``
 
 export const Access = () => {
   const accessToken = useSelector((store) => store.user.accessToken)
@@ -38,7 +43,7 @@ export const Access = () => {
   return (
     <div className='profile-card'>
       <h1>Hi {username} this is your profile page</h1>
-      <button onClick={onRemoveToken}>Sign out</button>
+      <StyledButton onClick={onRemoveToken}>Sign out</StyledButton>
     </div>
   )
 }

@@ -57,7 +57,7 @@ a {
   margin: 15px 0;
 }
 
-button {
+/* button {
   border-radius: 20px;
   border: 1px solid #ff4b2b;
   background-color: #ff4b2b;
@@ -81,7 +81,7 @@ button:focus {
 button.ghost {
   background-color: transparent;
   border-color: #ffffff;
-}
+} */
 
 form {
   background-color: #ffffff;
