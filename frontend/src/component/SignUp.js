@@ -12,7 +12,7 @@ export const SignUp = () => {
   const [isContainerActive, setIsContainerActive] = useState('')
 
   const accessToken = useSelector((store) => store.user.accessToken)
-  const error = useSelector((store) => store.user.error)
+  // const error = useSelector((store) => store.user.error)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()

@@ -24,7 +24,7 @@ export const Access = () => {
   const [profileImg, setProfileImg] = useState('')
   const accessToken = useSelector((store) => store.user.accessToken)
   const username = useSelector((store) => store.user.username)
-  const profilePic = useSelector((store) => store.user.profilePic)
+  // const profilePic = useSelector((store) => store.user.profilePic)
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
