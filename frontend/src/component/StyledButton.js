@@ -8,6 +8,7 @@ export const StyledButton = styled.button`
   font-size: 12px;
   font-weight: bold;
   padding: 12px 45px;
+  cursor: pointer;
   letter-spacing: 1px;
   text-transform: uppercase;
   transition: transform 80ms ease-in;

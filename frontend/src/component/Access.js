@@ -30,7 +30,6 @@ export const Access = () => {
 
   const onRemoveToken = () => {
     dispatch(user.actions.setDeleteAccessToken())
-    // navigate('/')
   }
 
   useEffect(() => {
@@ -80,10 +79,10 @@ export const Access = () => {
 
   return (
     <ProfileCard>
-      <img
+      {/* <img
         src="data:image/<%=image.img.contentType%>;base64,
                      <%=image.img.data.toString('base64')%>"
-      />
+      /> */}
       <h1>Hi {username} this is your profile page</h1>
 
       <form onSubmit={onProfilePicUpload}>

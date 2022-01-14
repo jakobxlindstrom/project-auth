@@ -23,14 +23,14 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: () => crypto.randomBytes(128).toString('hex'),
   },
-  profilePic: {
-    name: String,
-    desc: String,
-    img: {
-      data: Buffer,
-      contentType: String,
-    },
-  },
+  // profilePic: {
+  //   name: String,
+  //   desc: String,
+  //   img: {
+  //     data: Buffer,
+  //     contentType: String,
+  //   },
+  // },
 })
 
 const User = mongoose.model('User', UserSchema)
@@ -48,21 +48,21 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.set('view engine', 'ejs')
+// app.set('view engine', 'ejs')
 
-const multer = require('multer')
+// const multer = require('multer')
 // const imgModel = require('./model')
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads')
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now())
-  },
-})
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'uploads')
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, file.fieldname + '-' + Date.now())
+//   },
+// })
 
-const upload = multer({ storage: storage })
+// const upload = multer({ storage: storage })
 
 // Lägg till origin domain
 
@@ -85,42 +85,42 @@ app.get('/home', authenticateUser)
 app.get('/home', (req, res) => {
   res.json('Hello world')
 
-  User.find({}, (err, items) => {
-    if (err) {
-      console.log(err)
-      res.status(500).send('An error occurred', err)
-    } else {
-      res.render('imagesPage', { items: items })
-    }
-  })
-})
-
-app.post('/home', upload.single('image'), (req, res, next) => {
-  const obj = new User({
-    img: {
-      data: obj.fs.readFileSync(
-        path.join(__dirname + '/uploads/' + req.file.filename)
-      ),
-      contentType: 'image/png',
-    },
-  })
-  // const obj = {
-  //   img: {
-  //     data: fs.readFileSync(
-  //       path.join(__dirname + '/uploads/' + req.file.filename)
-  //     ),
-  //     contentType: 'image/png',
-  //   },
-  // }
-  // User.create(obj, (err, item) => {
+  // User.find({}, (err, items) => {
   //   if (err) {
   //     console.log(err)
+  //     res.status(500).send('An error occurred', err)
   //   } else {
-  //     // item.save();
-  //     res.redirect('/home')
+  //     res.render('imagesPage', { items: items })
   //   }
   // })
 })
+
+// app.post('/home', upload.single('image'), (req, res, next) => {
+//   const obj = new User({
+//     img: {
+//       data: obj.fs.readFileSync(
+//         path.join(__dirname + '/uploads/' + req.file.filename)
+//       ),
+//       contentType: 'image/png',
+//     },
+//   })
+//   const obj = {
+//     img: {
+//       data: fs.readFileSync(
+//         path.join(__dirname + '/uploads/' + req.file.filename)
+//       ),
+//       contentType: 'image/png',
+//     },
+//   }
+//   User.create(obj, (err, item) => {
+//     if (err) {
+//       console.log(err)
+//     } else {
+//       // item.save();
+//       res.redirect('/home')
+//     }
+//   })
+// })
 
 app.post('/signup', async (req, res) => {
   const { username, password } = req.body
