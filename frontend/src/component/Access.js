@@ -78,6 +78,7 @@ export const Access = () => {
   }
 
   return (
+    // We have a stretchgoal to let the user upload a profile pic, not getting it to work just yet
     <ProfileCard>
       {/* <img
         src="data:image/<%=image.img.contentType%>;base64,

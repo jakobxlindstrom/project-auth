@@ -5,6 +5,9 @@ import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 import bodyParser from 'body-parser'
 
+//There's a lot of code commented out, it's for our stretch goal to upload profile picture, hence
+//it's not deleted and just commented out. Will be cleaned up as soon as we get it to work.
+
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/authAPI'
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
 mongoose.Promise = Promise
@@ -80,7 +83,7 @@ const authenticateUser = async (req, res, next) => {
   }
 }
 
-// Start defining your routes here
+// When user is authenticated they are directed to this endpoint
 app.get('/home', authenticateUser)
 app.get('/home', (req, res) => {
   res.json('Hello world')

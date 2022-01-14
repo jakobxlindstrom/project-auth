@@ -12,10 +12,12 @@ export const SignUp = () => {
   const [isContainerActive, setIsContainerActive] = useState('')
 
   const accessToken = useSelector((store) => store.user.accessToken)
+  const error = useSelector((store) => store.user.error)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  // When clicking sign up or sign in button the card slides and the slug for the API changes to fetch the correct endpoint
   const onToggleClick = () => {
     if (mode === 'signin') {
       setMode('signup')
@@ -26,12 +28,14 @@ export const SignUp = () => {
     }
   }
 
+  //if there is an accessToken (user logged in), they will be directed to the logged in start page
   useEffect(() => {
     if (accessToken) {
       navigate('/')
     }
   }, [accessToken, navigate])
 
+  //POST request for sign in and sign up
   const onFormSubmit = (event) => {
     event.preventDefault()
 
@@ -59,6 +63,7 @@ export const SignUp = () => {
           dispatch(user.actions.setAccessToken(null))
           dispatch(user.actions.setError(data.response))
         }
+        alert(data.response)
       })
   }
 
