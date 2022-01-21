@@ -1,43 +1,42 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch, batch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { API_URL } from '../utils/constants'
-import user from '../reducers/user'
-import { StyledButton } from './StyledButton'
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch, batch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../utils/constants';
+import user from '../reducers/user';
+import { StyledButton } from './StyledButton';
 
 export const SignUp = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [mode, setMode] = useState('signin')
-  const [isContainerActive, setIsContainerActive] = useState('')
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [mode, setMode] = useState('signin');
+  const [isContainerActive, setIsContainerActive] = useState('');
 
-  const accessToken = useSelector((store) => store.user.accessToken)
-  // const error = useSelector((store) => store.user.error)
+  const accessToken = useSelector((store) => store.user.accessToken);
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // When clicking sign up or sign in button the card slides and the slug for the API changes to fetch the correct endpoint
   const onToggleClick = () => {
     if (mode === 'signin') {
-      setMode('signup')
-      setIsContainerActive(true)
+      setMode('signup');
+      setIsContainerActive(true);
     } else {
-      setMode('signin')
-      setIsContainerActive(false)
+      setMode('signin');
+      setIsContainerActive(false);
     }
-  }
+  };
 
   //if there is an accessToken (user logged in), they will be directed to the logged in start page
   useEffect(() => {
     if (accessToken) {
-      navigate('/')
+      navigate('/');
     }
-  }, [accessToken, navigate])
+  }, [accessToken, navigate]);
 
   //POST request for sign in and sign up
   const onFormSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
     const options = {
       method: 'POST',
@@ -45,98 +44,98 @@ export const SignUp = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username, password }),
-    }
+    };
 
     fetch(API_URL(mode), options)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
           batch(() => {
-            dispatch(user.actions.setUserId(data.response.userId))
-            dispatch(user.actions.setUsername(data.response.username))
-            dispatch(user.actions.setAccessToken(data.response.accessToken))
-            dispatch(user.actions.setError(null))
-          })
+            dispatch(user.actions.setUserId(data.response.userId));
+            dispatch(user.actions.setUsername(data.response.username));
+            dispatch(user.actions.setAccessToken(data.response.accessToken));
+            dispatch(user.actions.setError(null));
+          });
         } else {
-          dispatch(user.actions.setUserId(null))
-          dispatch(user.actions.setUsername(null))
-          dispatch(user.actions.setAccessToken(null))
-          dispatch(user.actions.setError(data.response))
+          dispatch(user.actions.setUserId(null));
+          dispatch(user.actions.setUsername(null));
+          dispatch(user.actions.setAccessToken(null));
+          dispatch(user.actions.setError(data.response));
         }
-        alert(data.response)
-      })
-  }
+        alert(data.response);
+      });
+  };
 
   return (
     <div
       className={`container ${isContainerActive ? 'right-panel-active' : ''}`}
     >
-      <div className='form-container sign-up-container'>
+      <div className="form-container sign-up-container">
         {/* Sign up form */}
-        <form action='#' onSubmit={onFormSubmit}>
+        <form action="#" onSubmit={onFormSubmit}>
           <h1>Create Account</h1>
-          <div className='social-container'></div>
+          <div className="social-container"></div>
           <span>or use your email for registration</span>
           <input
-            type='text'
+            type="text"
             value={username}
-            placeholder='Username'
+            placeholder="Username"
             onChange={(e) => setUsername(e.target.value)}
           />
 
           <input
-            type='password'
+            type="password"
             value={password}
-            placeholder='Password'
+            placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
           />
           <StyledButton>Sign Up</StyledButton>
         </form>
       </div>
-      <div className='form-container sign-in-container'>
+      <div className="form-container sign-in-container">
         {/* Sign in form */}
-        <form action='#' onSubmit={onFormSubmit}>
+        <form action="#" onSubmit={onFormSubmit}>
           <h1>Sign in</h1>
-          <div className='social-container'></div>
+          <div className="social-container"></div>
           <span>or use your account</span>
           <input
-            id='username'
-            type='text'
+            id="username"
+            type="text"
             value={username}
-            placeholder='Username'
+            placeholder="Username"
             onChange={(e) => setUsername(e.target.value)}
           />
           <input
-            id='password'
-            type='password'
+            id="password"
+            type="password"
             value={password}
-            placeholder='Password'
+            placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
           />
 
           <StyledButton>Sign In</StyledButton>
         </form>
       </div>
-      <div className='overlay-container'>
-        <div className='overlay'>
-          <div className='overlay-panel overlay-left'>
+      <div className="overlay-container">
+        <div className="overlay">
+          <div className="overlay-panel overlay-left">
             <h1>Welcome Back!</h1>
             <p>
               To keep connected with us please login with your personal info
             </p>
-            <StyledButton className='ghost' id='signIn' onClick={onToggleClick}>
+            <StyledButton className="ghost" id="signIn" onClick={onToggleClick}>
               Sign In
             </StyledButton>
           </div>
-          <div className='overlay-panel overlay-right'>
+          <div className="overlay-panel overlay-right">
             <h1>Hello, Friend!</h1>
             <p>Enter your personal details and start journey with us</p>
-            <StyledButton className='ghost' id='signUp' onClick={onToggleClick}>
+            <StyledButton className="ghost" id="signUp" onClick={onToggleClick}>
               Sign Up
             </StyledButton>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
